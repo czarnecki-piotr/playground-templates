@@ -6,12 +6,7 @@
 <head>
   <title th:text="#{pages.forwardToAuthentication.title}"></title>
   <th:block th:if="${not(#strings.isEmpty(forwardTo))}">
-    <meta http-equiv="refresh" th:attr="content='0; url=' + ${forwardTo}">
-    <script th:inline="javascript">
-      /*<![CDATA[*/
-      window.location.href = /*[[${forwardTo}]]*/ '';
-      /*]]>*/
-    </script>
+
   </th:block>
 </head>
 <body id="forward-to-authentication">
