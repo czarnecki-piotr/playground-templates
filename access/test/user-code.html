@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout-engine}">
+<head>
+  <title th:text="#{pages.userCode.title}"></title>
+</head>
+
+<body id="page-usercode" th:with="confirmOnly=${userCode != null}">
+<th:block layout:fragment="page-heading">
+  <h1 th:if="${confirmOnly}" th:text="#{userCode.header.confirm}">_Title of the page</h1>
+  <h1 th:if="${!confirmOnly}" th:text="#{userCode.header.enter}">_Title of the page</h1>
+</th:block>
+
+<th:block layout:fragment="content">
+  <p th:text="#{userCode.error.invalidCode}" class="error-info" th:if="${invalidUserCode}"/>
+  <p th:text="#{userCode.error.invalidCsrfToken}" class="error-info" th:if="${invalidCsrfToken}"/>
+
+  <form method="post" id="usercode-form" class="form-simple">
+    <th:block th:if="${confirmOnly}">
+      <p th:text="#{userCode.intro.confirm}"/>
+      <p th:text="${userCode}" style="font-size: xxx-large">_Code</p>
+      <input name="user_code" th:value="${userCode}" type="hidden"/>
+    </th:block>
+    <th:block th:if="${!confirmOnly}">
+      <label for="user-code" th:text="#{userCode.intro.enter}"/>
+      <input required name="user_code" id="user-code" type="text" class="uppercase" maxlength="8" minlength="8"/>
+    </th:block>
+    <div>
+      <input type="submit" th:value="#{consent.submit}" class="btn btn-primary"/>
+    </div>
+    <input type="hidden"
+           th:name="${T(com.onewelcome.common.util.CsrfUtil).CSRF_TOKEN}"
+           th:value="${session[T(com.onewelcome.common.util.CsrfUtil).CSRF_TOKEN]}"/>
+  </form>
+</th:block>
+</body>
+</html>
